@@ -12,7 +12,7 @@ function App() {
       const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${i}/`);
       const data = await response.json();
       if (!ignore) {
-        setPokemonList((prevList) => ([...prevList, data]));
+        setPokemonList((prevList) => ([...prevList, { name: data.name, image: data.sprites.other["official-artwork"].front_default, hit: false }]));
       }
     }
 
@@ -25,12 +25,19 @@ function App() {
     };
   }, []);
 
-  console.log(pokemonList);
+  function handleRestart() {
+    const resetList = pokemonList;
+    resetList.forEach((element) => element.hit = false);
+    setPokemonList(resetList);
+  }
+
   return (
     <div>
-      {pokemonList.map((pokemon) => (
-        <Card key={pokemon.name} name={pokemon.name} image={pokemon.sprites.other["official-artwork"].front_default} />
-      ))}
+      <div className="card-grid">
+        {pokemonList.map((pokemon) => (
+          <Card key={pokemon.name} name={pokemon.name} image={pokemon.image} />
+        ))}
+      </div>
     </div>
   )
 }
