@@ -3,6 +3,7 @@ import './App.css'
 import Card from './components/Card'
 
 function App() {
+  const [counter, setCounter] = useState(0);
   const [pokemonList, setPokemonList] = useState([]);
 
   useEffect(() => {
@@ -31,11 +32,21 @@ function App() {
     setPokemonList(resetList);
   }
 
+  function shuffle() {
+    let shuffledList = [...pokemonList]
+      .map(value => ({ value, sort: Math.random() }))
+      .sort((a, b) => a.sort - b.sort)
+      .map(({ value }) => value);
+    setPokemonList(shuffledList);
+    console.log(shuffledList);
+    console.log(pokemonList);
+  }
+
   return (
-    <div>
+    <div id="page">
       <div className="card-grid">
         {pokemonList.map((pokemon) => (
-          <Card key={pokemon.name} name={pokemon.name} image={pokemon.image} />
+          <Card key={pokemon.name} name={pokemon.name} image={pokemon.image} onClick={shuffle} />
         ))}
       </div>
     </div>
