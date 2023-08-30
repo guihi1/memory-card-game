@@ -46,7 +46,7 @@ function App() {
     <div id="page">
       <div className="card-grid">
         {pokemonList.map((pokemon) => (
-          <Card key={pokemon.name} name={pokemon.name} image={pokemon.image} onClick={shuffle} />
+          <Card key={pokemon.name} name={pokemon.name} image={pokemon.image} handleClick={shuffle} />
         ))}
       </div>
     </div>
