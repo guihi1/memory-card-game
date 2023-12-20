@@ -4,6 +4,7 @@ import Card from './components/Card'
 
 function App() {
   const [counter, setCounter] = useState(0);
+  const [bestScore, setBestScore] = useState(0);
   const [pokemonList, setPokemonList] = useState([]);
 
   useEffect(() => {
@@ -26,10 +27,13 @@ function App() {
     };
   }, []);
 
-  function handleRestart() {
-    const resetList = pokemonList;
-    resetList.forEach((element) => element.hit = false);
+  function reset() {
+    let resetList = [...pokemonList].map(value => value.hit = false);
     setPokemonList(resetList);
+  }
+
+  function handleCounter() {
+    setCounter(counter + 1);
   }
 
   function shuffle() {
@@ -38,15 +42,33 @@ function App() {
       .sort((a, b) => a.sort - b.sort)
       .map(({ value }) => value);
     setPokemonList(shuffledList);
-    console.log(shuffledList);
-    console.log(pokemonList);
+  }
+
+  function handleClick(name) {
+    let flag = false;
+    let afterHit = [...pokemonList].map((value) => {
+      if (value.name === name && !value.hit) {
+        value.hit = true;
+      } else if (value.name === name && value.hit) {
+        flag = true;
+      }
+    })
+    if (!flag) {
+      setPokemonList(afterHit);
+      handleCounter();
+    } else if (flag) {
+      reset();
+      setCounter(0);
+    }
+    shuffle();
   }
 
   return (
     <div id="page">
+      <p>{counter}</p>
       <div className="card-grid">
         {pokemonList.map((pokemon) => (
-          <Card key={pokemon.name} name={pokemon.name} image={pokemon.image} handleClick={shuffle} />
+          <Card key={pokemon.name} name={pokemon.name} image={pokemon.image} handleClick={handleClick} />
         ))}
       </div>
     </div>
