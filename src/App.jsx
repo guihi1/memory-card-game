@@ -32,6 +32,12 @@ function App() {
     setPokemonList(resetList);
   }
 
+  function checkScore() {
+    if (counter > bestScore) {
+      setBestScore(counter);
+    }
+  }
+
   function handleCounter() {
     setCounter(counter + 1);
   }
@@ -58,6 +64,7 @@ function App() {
       handleCounter();
     } else if (flag) {
       reset();
+      checkScore();
       setCounter(0);
     }
     shuffle();
@@ -65,7 +72,16 @@ function App() {
 
   return (
     <div id="page">
-      <p>{counter}</p>
+      <div id="bar">
+        <div>
+          <h1>Pokemon Memory Game</h1>
+          <p>Don&apos;t click on the same card more than once</p>
+        </div>
+        <div id="score">
+          <p>Current score: {counter}</p>
+          <p>Best score: {bestScore}</p>
+        </div>
+      </div>
       <div className="card-grid">
         {pokemonList.map((pokemon) => (
           <Card key={pokemon.name} name={pokemon.name} image={pokemon.image} handleClick={handleClick} />
